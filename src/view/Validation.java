@@ -8,12 +8,10 @@ package view;
  *
  * @author ASUS
  */
-
 import java.util.HashMap;
 import java.util.Scanner;
 import java.util.Set;
 import model.Doctor;
-
 
 public class Validation {
 
@@ -48,11 +46,13 @@ public class Validation {
 
             try {
                 // loi nhap sai dinh dang so 
+                // asd 2123hu 
                 int input = Integer.parseInt(input_raw);
                 // loi nhap ngoai range cho phep
                 if (input < min || input > max) {
-                    System.err.println("Must input a number from " + min + "to " + max);
+                    System.err.println("Must input a number from " + min + " to " + max);
                     continue;
+
                 }
                 return input;
             } catch (NumberFormatException e) {
@@ -62,15 +62,14 @@ public class Validation {
 
         }
     }
-    
-    
-    public int checkINT(String input) { 
-        while(true){ 
-            if(Integer.parseInt(input)>0) { 
+
+    public int checkINT(String input) {
+        while (true) {
+            if (Integer.parseInt(input) > 0) {
                 return Integer.parseInt(input);
+            } else {
+                continue;
             }
-            else
-            continue;
         }
     }
 
@@ -80,18 +79,26 @@ public class Validation {
             // khai bao bien co de kiem tra xem co trung hay khong, neu trung thi flag = 1 
 //        int flag = 0;
             // NHAP ID DE CHECK 
-            String id = inputString(msg);
-            Doctor find_doctor = getDoctorByCode(list, id);
-            if (find_doctor != null) {
-                System.err.println("Doctor code is existed in DB!!Please enter again");
+            try {
+                String id = inputString(msg);
+                if (Integer.parseInt(id) > 0) {
+                    Doctor find_doctor = getDoctorByCode(list, id);
+                    if (find_doctor != null) {
+                        System.err.println("Doctor code is existed in DB!!Please enter again");
+                        continue;
+                    }
+                    return id;
+                }
+            } catch (Exception e) {
+                System.out.println("Doctor code must be number.");
                 continue;
             }
-            return id;
+
         }
 
     }
-    
-    public String checkNew( HashMap<String, Doctor> list) { 
+
+    public String checkNew(HashMap<String, Doctor> list) {
         while (true) {
             // khai bao bien co de kiem tra xem co trung hay khong, neu trung thi flag = 1 
 //        int flag = 0;
@@ -109,8 +116,10 @@ public class Validation {
 
     public Doctor getDoctorByCode(HashMap<String, Doctor> list, String code) {
         Set keySet = list.keySet();
+
         for (Object key : keySet) {
             Doctor d = list.get(key);
+
             if (d.getCode().equals(code)) {
                 return d;
             }
@@ -133,5 +142,20 @@ public class Validation {
         }
     }
 
-}
+    public void checkIDis(HashMap<String, Doctor> list, String id) {
+        while (true) {
+            Set set = list.entrySet();
+            int d = 0;
+            for (Object o : set) {
+                if (Integer.parseInt(list.get(o).getCode()) == Integer.parseInt(id)) {
+                    d++;
+                }
+            }
+            if (d == 0) {
+                System.out.println("No exists data with have ID like is.");
+                    continue;
+            }
+        }
+    }
 
+}
